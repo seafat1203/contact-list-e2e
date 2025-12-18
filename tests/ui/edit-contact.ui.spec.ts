@@ -1,5 +1,5 @@
 import { test } from '../../src/fixtures/softAssertFixture';
-import { StringUtils as SU } from '../../src/utils/StringUtils';
+import { StringUtils as SU } from '../../src/utils/stringUtils';
 import { buildContact } from '../../src/data/contactBuilder';
 
 import { LoginPage } from '../../src/pages/LoginPage';
