@@ -2,6 +2,7 @@ import { Page, Locator } from '@playwright/test';
 import { Step } from '../../src/allure_decorator/step';
 
 export class ContactListPage {
+
   readonly page: Page;
 
   readonly addNewContactButton: Locator;
@@ -22,6 +23,11 @@ export class ContactListPage {
 
   private contactNameCell(fullName: string): Locator {
     return this.page.getByRole('cell', { name: fullName });
+  }
+
+  @Step('Check if "Add a New Contact" button is visible')
+  async isAddNewContactButtonVisible(): Promise<boolean> {
+    return this.addNewContactButton.isVisible();
   }
 
   @Step('Wait for contact "{0}" to appear in contact list')

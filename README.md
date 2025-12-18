@@ -59,6 +59,21 @@ The goal is to clearly show:
 - what the test did
 - at which step it failed
 
+#### To generate and view the Allure report locally:
+
+Note: Allure CLI must be installed locally to generate the report.
+
+1. Run the tests:
+   npx playwright test
+
+2. Generate the report: 
+   allure generate allure-results --clean -o allure-report
+
+3. Open the report:
+   allure open allure-report
+
+   
+
 
 
 ## Soft Assertion Design
@@ -89,4 +104,5 @@ This design allows:
 
 - Parallel: Parallel execution is not recommended to avoid data conflicts currently. 
 - Step framwork: There is currently no dedicated step framework at the test level. This is intentional, as the project scope is small and test scenarios are simple.
+- TypeScript is configured via tsconfig.json. For this exercise, ESLint was not introduced to keep the setup lightweight.
 

@@ -10,8 +10,8 @@ import { EditContactPage } from '../../src/pages/EditContactPage';
 
 test('UI - user can edit an existing contact and see updates in contact list', async ({ page, sa: softAssert }) => {
   // ---------- Given: user is logged in ----------
-  const email = 'junyang.zhao1203@gmail.com';
-  const password = '6VMqUiHgkfYp@8';
+  const userEmail = process.env.TEST_USER_EMAIL || 'test.user@example.com';
+  const userPassword = process.env.TEST_USER_PASSWORD || 'Password123!';
 
   const loginPage = new LoginPage(page);
   const contactListPage = new ContactListPage(page);
@@ -20,7 +20,7 @@ test('UI - user can edit an existing contact and see updates in contact list', a
   const editContactPage = new EditContactPage(page);
 
   await loginPage.goto();
-  await loginPage.login(email, password);
+  await loginPage.login(userEmail, userPassword);
   await page.waitForURL('**/contactList');
 
   // ---------- And: an existing contact ----------

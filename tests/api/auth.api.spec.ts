@@ -6,8 +6,8 @@ test('API - user can authenticate and receive token', async ({ request, sa }) =>
   const client = new ApiClient(request);
   const authApi = new AuthApi(client);
 
-  const userEmail = 'junyang.zhao1203@gmail.com';
-  const userPassword = '6VMqUiHgkfYp@8';
+  const userEmail = process.env.TEST_USER_EMAIL || 'test.user@example.com';
+  const userPassword = process.env.TEST_USER_PASSWORD || 'Password123!';
 
   const response = await authApi.login(userEmail, userPassword);
 
@@ -15,12 +15,10 @@ test('API - user can authenticate and receive token', async ({ request, sa }) =>
 
   const responseBody = await response.json();
 
+  // If you want to see failing assertions, uncomment the lines below
   // await sa.assertEquals(1, 999, 'This is a failing assertion for demonstration purposes');
 
   await sa.assertTrue(Boolean(responseBody.token), 'Authentication token should be returned');
 
   await sa.assertEquals(responseBody.user.email, userEmail, 'Returned user email should match login email');
-
-  // await sa.assertEquals("1", "2", 'This is a 2nd failing assertion for demonstration purposes');
-
 });

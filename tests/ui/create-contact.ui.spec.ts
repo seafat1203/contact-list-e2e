@@ -3,16 +3,17 @@ import { StringUtils as SU } from '../../src/utils/stringUtils';
 import { buildContact } from '../../src/data/contactBuilder';
 import { LoginPage } from '../../src/pages/LoginPage';
 import { CreateContactPage } from '../../src/pages/CreateContactPage';
+import { ContactListPage } from '../../src/pages/ContactListPage';
 
 test('UI - user can create a new contact and see it in contact list', async ({ page, sa: softAssert }) => {
   // --- Given: user is logged in ---
-  const email = 'junyang.zhao1203@gmail.com';
-  const password = '6VMqUiHgkfYp@8';
+  const userEmail = process.env.TEST_USER_EMAIL || 'test.user@example.com';
+  const userPassword = process.env.TEST_USER_PASSWORD || 'Password123!';
 
   const loginPage = new LoginPage(page);
 
   await loginPage.goto();
-  await loginPage.login(email, password);
+  await loginPage.login(userEmail, userPassword);
   await page.waitForURL('**/contactList');
 
   // --- When: user creates a new contact ---
@@ -27,9 +28,9 @@ test('UI - user can create a new contact and see it in contact list', async ({ p
   });
 
   const createContactPage = new CreateContactPage(page);
-
+  const contactListPage = new ContactListPage(page);
   
-  await page.getByRole('button', { name: 'Add a New Contact' }).click();
+  await contactListPage.clickAddNewContact();
   await createContactPage.fillContactForm(contact);
   await createContactPage.submit();
 
@@ -55,7 +56,7 @@ test('UI - user can create a new contact and see it in contact list', async ({ p
 
   await softAssert.assertEquals(
     true,
-    await page.getByRole('button', { name: 'Add a New Contact' }).isVisible(),
+    await contactListPage.isAddNewContactButtonVisible(),
     'Add New Contact button should still be visible',
   );
 });

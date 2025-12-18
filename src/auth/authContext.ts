@@ -17,8 +17,8 @@ export class AuthContext {
     const authApi = new AuthApi(client);
 
     const response = await authApi.login(
-      process.env.TEST_USER_EMAIL || 'junyang.zhao1203@gmail.com',
-      process.env.TEST_USER_PASSWORD || '6VMqUiHgkfYp@8',
+      process.env.TEST_USER_EMAIL || 'test.user@example.com',
+      process.env.TEST_USER_PASSWORD || 'Password123!',
     );
 
     const body = await response.json();
