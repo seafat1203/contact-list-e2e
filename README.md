@@ -72,8 +72,6 @@ Note: Allure CLI must be installed locally to generate the report.
 3. Open the report:
    allure open allure-report
 
-   
-
 
 
 ## Soft Assertion Design
@@ -99,9 +97,28 @@ This design allows:
 - fewer re-runs
 - more useful test reports
 
+## Docker (optional)
+
+This project can be executed using Docker to simplify local setup and ensure a consistent execution environment.
+
+#### Build the Docker image:
+docker build -t contact-list-e2e .
+
+#### Run all tests:
+docker run --rm contact-list-e2e
+
+If environment variables are required (e.g. credentials):
+docker run --rm
+-e TEST_USER_EMAIL=your_email
+-e TEST_USER_PASSWORD=your_password
+contact-list-e2e
+
+Tests are executed sequentially to ensure stability and reproducibility for this exercise.
+
 
 ## Notes
 
+- Authentication tests require credentials provided via environment variables (TEST_USER_EMAIL, TEST_USER_PASSWORD). In CI, these variables are configured as GitHub Actions Secrets.
 - Parallel: Parallel execution is not recommended to avoid data conflicts currently. 
 - Step framwork: There is currently no dedicated step framework at the test level. This is intentional, as the project scope is small and test scenarios are simple.
 - TypeScript is configured via tsconfig.json. For this exercise, ESLint was not introduced to keep the setup lightweight.

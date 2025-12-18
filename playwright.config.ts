@@ -3,9 +3,6 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 60 * 1000, // timeout per test
 
-
-
-
   testDir: './tests',
 
   /* Allow tests in different files to run in parallel */
@@ -18,7 +15,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
 
   /* Parallelism control */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
 
   /* ✅ Use Allure as the only reporter */
   reporter: [['allure-playwright']],

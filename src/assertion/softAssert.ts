@@ -45,9 +45,6 @@ export class SoftAssert {
     await this.run('IsTrue', true, actual, actual === true, message);
   }
 
-  async assertFalse(actual: boolean, message?: string) {
-    await this.run('IsFalse', false, actual, actual === false, message);
-  }
 
   // ===== Final check =====
 
