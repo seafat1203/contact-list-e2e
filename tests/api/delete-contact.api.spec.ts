@@ -7,9 +7,6 @@ import { buildContact } from '../../src/data/contactBuilder';
 import { StringUtils as SU } from '../../src/utils/stringUtils';
 
 test('API - user can delete a contact', async ({ request, sa }) => {
-  // =========================
-  // Arrange
-  // =========================
 
   // Initialize API client and Contact API
   const client = new ApiClient(request);
@@ -31,41 +28,22 @@ test('API - user can delete a contact', async ({ request, sa }) => {
     email,
   });
 
-  // Create a contact first 
+  // Create a contact first
   const createRes = await contactApi.addContact(token, contactToDelete);
   // Verify contact creation succeeded
-  await sa.assertEquals(
-    createRes.status(),
-    201,
-    'Create contact should return HTTP 201',
-  );
+  await sa.assertEquals(201, createRes.status(), 'Create contact should return HTTP 201');
+
   const createdContact = await createRes.json();
   const contactId = createdContact._id;
-
-  // =========================
-  // Act
-  // =========================
 
   // Delete the previously created contact via API
   const deleteRes = await contactApi.deleteContact(token, contactId);
 
-  // =========================
-  // Assert
-  // =========================
-
   // Verify contact deletion succeeded
-  await sa.assertEquals(
-    deleteRes.status(),
-    200,
-    'Delete contact should return HTTP 200',
-  );
+  await sa.assertEquals(200, deleteRes.status(), 'Delete contact should return HTTP 200');
 
   // Verify the deleted contact is no longer accessible
   const getRes = await contactApi.getContact(token, contactId);
 
-  await sa.assertEquals(
-    getRes.status(),
-    404,
-    'Getting a deleted contact should return HTTP 404',
-  );
+  await sa.assertEquals(404, getRes.status(), 'Getting a deleted contact should return HTTP 404');
 });

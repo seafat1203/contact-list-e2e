@@ -2,7 +2,6 @@ import { Page, Locator } from '@playwright/test';
 import { Step } from '../../src/allure_decorator/step';
 
 export class ContactListPage {
-
   readonly page: Page;
 
   readonly addNewContactButton: Locator;
@@ -52,6 +51,6 @@ export class ContactListPage {
 
   @Step('Check if logout button is visible')
   async isLogoutVisible(): Promise<boolean> {
-  return this.page.locator('#logout').isVisible();
-}
+    return this.page.locator('#logout').isVisible();
+  }
 }

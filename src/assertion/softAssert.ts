@@ -1,11 +1,4 @@
 // src/utils/softAssert.ts
-// Final, safe Soft Assertion helper
-// - True soft assertions: never stop test execution
-// - Works for both UI and API tests
-// - Defensive code: no runtime error inside SoftAssert
-// - UI tests (with Page): screenshot on failure
-// - API tests: JSON attachment only on failure
-// - Clean report: no noise on successful assertions
 
 import { test, type Page, type TestInfo } from '@playwright/test';
 
@@ -45,7 +38,6 @@ export class SoftAssert {
     await this.run('IsTrue', true, actual, actual === true, message);
   }
 
-
   // ===== Final check =====
 
   async assertAll() {
@@ -79,20 +71,12 @@ export class SoftAssert {
         (f.message ? `   Message:  ${f.message}\n` : ''),
     );
 
-    throw new Error(
-      `Soft assertions failed (${failed}/${this.total})\n\n${lines.join('\n')}`,
-    );
+    throw new Error(`Soft assertions failed (${failed}/${this.total})\n\n${lines.join('\n')}`);
   }
 
   // ===== Internal =====
 
-  private async run(
-    kind: string,
-    expected: unknown,
-    actual: unknown,
-    pass: boolean,
-    message?: string,
-  ) {
+  private async run(kind: string, expected: unknown, actual: unknown, pass: boolean, message?: string) {
     this.total++;
     this.index++;
 

@@ -11,7 +11,7 @@ test('API - user can authenticate and receive token', async ({ request, sa }) =>
 
   const response = await authApi.login(userEmail, userPassword);
 
-  await sa.assertEquals(String(response.status()), '200', 'Login API should return HTTP 200');
+  await sa.assertEquals(200, response.status(), 'Login API should return HTTP 200');
 
   const responseBody = await response.json();
 
@@ -20,5 +20,5 @@ test('API - user can authenticate and receive token', async ({ request, sa }) =>
 
   await sa.assertTrue(Boolean(responseBody.token), 'Authentication token should be returned');
 
-  await sa.assertEquals(responseBody.user.email, userEmail, 'Returned user email should match login email');
+  await sa.assertEquals(userEmail, responseBody.user.email, 'Returned user email should match login email');
 });

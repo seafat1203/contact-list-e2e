@@ -37,10 +37,7 @@ export async function attachRequest(info: {
  * - Useful for API/UI hybrid tests (UI action → API validation)
  * - Keeps request/response trace close to the test step
  */
-export async function attachResponse(info: {
-  status: number;
-  body?: unknown;
-}) {
+export async function attachResponse(info: { status: number; body?: unknown }) {
   await test.info().attach('Response', {
     body: toJson(info),
     contentType: 'application/json',

@@ -7,9 +7,6 @@ import { buildContact } from '../../src/data/contactBuilder';
 import { StringUtils as SU } from '../../src/utils/stringUtils';
 
 test('API - user can add a contact', async ({ request, sa }) => {
-  // =========================
-  // Arrange
-  // =========================
 
   // Initialize API client and Contact API
   const client = new ApiClient(request);
@@ -31,41 +28,18 @@ test('API - user can add a contact', async ({ request, sa }) => {
     email,
   });
 
-  // =========================
-  // Act
-  // =========================
 
   // Create a new contact via API
   const createRes = await contactApi.addContact(token, newContact);
   const responseBody = await createRes.json();
 
-  // =========================
-  // Assert (Soft Assertions)
-  // =========================
-
   // Verify API response status
-  await sa.assertEquals(
-    String(createRes.status()),
-    '201',
-    'Create contact should return HTTP 201',
-  );
+  await sa.assertEquals(201, createRes.status(), 'Create contact should return HTTP 201');
 
   // Verify returned contact data matches the input
-  await sa.assertEquals(
-    responseBody.firstName,
-    newContact.firstName,
-    'First name should match input',
-  );
+  await sa.assertEquals(newContact.firstName, responseBody.firstName, 'First name should match input');
 
-  await sa.assertEquals(
-    responseBody.lastName,
-    newContact.lastName,
-    'Last name should match input',
-  );
+  await sa.assertEquals(newContact.lastName, responseBody.lastName, 'Last name should match input');
 
-  await sa.assertEquals(
-    responseBody.email,
-    newContact.email,
-    'Email should match input',
-  );
+  await sa.assertEquals(newContact.email, responseBody.email, 'Email should match input');
 });

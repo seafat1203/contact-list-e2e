@@ -29,7 +29,7 @@ test('UI - user can create a new contact and see it in contact list', async ({ p
 
   const createContactPage = new CreateContactPage(page);
   const contactListPage = new ContactListPage(page);
-  
+
   await contactListPage.clickAddNewContact();
   await createContactPage.fillContactForm(contact);
   await createContactPage.submit();
@@ -39,18 +39,17 @@ test('UI - user can create a new contact and see it in contact list', async ({ p
 
   const fullName = `${contact.firstName} ${contact.lastName}`;
 
-  const contactNameCell = page.getByRole('cell', { name: fullName });
-  await contactNameCell.waitFor({ state: 'visible', timeout: 5000 });
+  await contactListPage.waitForContactVisible(fullName);
 
   await softAssert.assertEquals(
     true,
-    await contactNameCell.isVisible(),
+    await contactListPage.isContactVisible(fullName),
     'New contact <full name> should be visible in contact list',
   );
 
   await softAssert.assertEquals(
     true,
-    await page.getByText(contact.email).isVisible(),
+    await contactListPage.isContactEmailVisible(contact.email),
     'New contact <email> should be visible in contact list',
   );
 

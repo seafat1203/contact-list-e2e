@@ -15,23 +15,15 @@ export class EditContactPage {
     this.submitButton = page.getByRole('button', { name: 'Submit' });
   }
 
-@Step('Wait until edit contact form is fully initialized')
-async waitForEditFormReady(expectedInitialLastName: string) {
-  await this.lastNameInput.waitFor({ state: 'visible' });
+  @Step('Wait until edit contact form is fully initialized')
+  async waitForEditFormReady(expectedInitialLastName: string) {
+    await this.lastNameInput.waitFor({ state: 'visible' });
 
-  // 等 input.value 被 JS 初始化完成（而不是空、不是中间态）
-  await this.page.waitForFunction(
-    (expected) => {
+    await this.page.waitForFunction((expected) => {
       const input = document.querySelector('#lastName') as HTMLInputElement | null;
-      return (
-        input !== null &&
-        input.value !== '' &&
-        input.value === expected
-      );
-    },
-    expectedInitialLastName
-  );
-}
+      return input !== null && input.value !== '' && input.value === expected;
+    }, expectedInitialLastName);
+  }
 
   @Step('Update last name to "{0}"')
   async updateLastName(value: string) {

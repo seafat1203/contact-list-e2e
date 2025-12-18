@@ -34,9 +34,8 @@ export default defineConfig({
     navigationTimeout: 30 * 1000, // page.goto / waitForURL
 
     launchOptions: {
-      slowMo: 100, // delay each action by 100ms, as PW is too fast ! 
+      slowMo: 100, // delay each action by 100ms, as PW is too fast !
     },
-
   },
 
   /* Browser projects (UI tests will use this, API tests are browser-agnostic) */

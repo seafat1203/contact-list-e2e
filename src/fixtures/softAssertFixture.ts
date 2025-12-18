@@ -1,8 +1,4 @@
 // src/fixtures/softAssertFixture.ts
-// UI / API compatible SoftAssert fixture
-// - Does NOT own assertions
-// - Does NOT attach screenshots
-// - Only manages lifecycle
 
 import { test as base, type TestInfo } from '@playwright/test';
 import { SoftAssert } from '../assertion/softAssert';

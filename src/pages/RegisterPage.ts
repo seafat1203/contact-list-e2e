@@ -51,13 +51,7 @@ export class RegisterPage {
     await this.submitButton.click();
   }
 
-
-  async register(user: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }) {
+  async register(user: { firstName: string; lastName: string; email: string; password: string }) {
     await this.fillFirstName(user.firstName);
     await this.fillLastName(user.lastName);
     await this.fillEmail(user.email);
