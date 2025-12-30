@@ -10,7 +10,7 @@ function toJson(data: unknown): Buffer {
 }
 
 /**
- * Attach an HTTP request to the Playwright test report.
+ * Attach an HTTP request to the test report.
  *
  * Why:
  * - Helps debugging API tests when a test fails
@@ -30,7 +30,7 @@ export async function attachRequest(info: {
 }
 
 /**
- * Attach an HTTP response to the Playwright test report.
+ * Attach an HTTP response to the test report.
  *
  * Why:
  * - Makes test failures self-explanatory (status + response body)

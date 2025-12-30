@@ -9,7 +9,6 @@ import { ContactDetailsPage } from '../../src/pages/ContactDetailsPage';
 import { EditContactPage } from '../../src/pages/EditContactPage';
 
 test('UI - user can edit an existing contact and see updates in contact list', async ({ page, sa: softAssert }) => {
-  // ---------- Given: user is logged in ----------
   const userEmail = process.env.TEST_USER_EMAIL || 'test.user@example.com';
   const userPassword = process.env.TEST_USER_PASSWORD || 'Password123!';
 
@@ -19,53 +18,60 @@ test('UI - user can edit an existing contact and see updates in contact list', a
   const contactDetailsPage = new ContactDetailsPage(page);
   const editContactPage = new EditContactPage(page);
 
-  await loginPage.goto();
-  await loginPage.login(userEmail, userPassword);
-  await page.waitForURL('**/contactList');
+  let contact;
+  let fullName: string;
+  let previousLastName: string | null;
 
-  // ---------- And: an existing contact ----------
-  const firstName = 'UI';
-  const lastName = `Edit-${SU.getRandomNumber(5)}`;
-  const contactEmail = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
+  await test.step('Given the user is logged in and has an existing contact', async () => {
+    await loginPage.goto();
+    await loginPage.login(userEmail, userPassword);
+    await page.waitForURL('**/contactList');
 
-  const contact = buildContact({
-    firstName,
-    lastName,
-    email: contactEmail,
+    const firstName = 'UI';
+    const lastName = `Edit-${SU.getRandomNumber(5)}`;
+    const contactEmail = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
+
+    contact = buildContact({
+      firstName,
+      lastName,
+      email: contactEmail,
+    });
+
+    await contactListPage.clickAddNewContact();
+    await createContactPage.fillContactForm(contact);
+    await createContactPage.submit();
+    await page.waitForURL('**/contactList');
+
+    fullName = `${contact.firstName} ${contact.lastName}`;
   });
 
-  await contactListPage.clickAddNewContact();
-  await createContactPage.fillContactForm(contact);
-  await createContactPage.submit();
-  await page.waitForURL('**/contactList');
+  await test.step('When the user edits the contact details', async () => {
+    await contactListPage.openContact(fullName);
 
-  const fullName = `${contact.firstName} ${contact.lastName}`;
+    await contactDetailsPage.waitForDetailsPageReady();
+    previousLastName = await contactDetailsPage.getLastName();
 
-  // ---------- When: user edits the existing contact ----------
-  await contactListPage.openContact(fullName);
+    await contactDetailsPage.clickEditContact();
+    await page.waitForURL('**/editContact');
 
-  await contactDetailsPage.waitForDetailsPageReady();
-  const previousLastName = await contactDetailsPage.getLastName();
+    await editContactPage.waitForEditFormReady(previousLastName!);
 
-  await contactDetailsPage.clickEditContact();
-  await page.waitForURL('**/editContact');
+    const updatedLastName = `${contact.lastName}-Updated`;
+    const updatedCity = 'Lyon';
 
-  await editContactPage.waitForEditFormReady(previousLastName!);
+    await editContactPage.updateLastName(updatedLastName);
+    await editContactPage.updateCity(updatedCity);
+    await editContactPage.submit();
+    await page.waitForURL('**/contactDetails');
+  });
 
-  const updatedLastName = `${contact.lastName}-Updated`;
-  const updatedCity = 'Lyon';
+  await test.step('Then the updated contact information is visible', async () => {
+    await contactDetailsPage.waitForLastNameUpdated(previousLastName!);
 
-  await editContactPage.updateLastName(updatedLastName);
-  await editContactPage.updateCity(updatedCity);
-  await editContactPage.submit();
-  await page.waitForURL('**/contactDetails');
-
-  // ---------- Then: updated contact is visible ----------
-  await contactDetailsPage.waitForLastNameUpdated(previousLastName!); // another solution is to Use slowMO at 300 ms
-
-  await softAssert.assertEquals(
-    updatedLastName,
-    await contactDetailsPage.getLastName(),
-    'Updated last name should be visible in contact details page',
-  );
+    await softAssert.assertEquals(
+      `${contact.lastName}-Updated`,
+      await contactDetailsPage.getLastName(),
+      'Updated last name should be visible in contact details page',
+    );
+  });
 });
