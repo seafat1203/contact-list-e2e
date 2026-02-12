@@ -9,6 +9,10 @@ The focus of this project is:
 - a shared assertion and reporting system
 - readable test reports for everyone
 
+
+## Application Under Test:
+Website (UI): https://thinking-tester-contact-list.herokuapp.com/
+
 ---
 
 ## Test Structure
